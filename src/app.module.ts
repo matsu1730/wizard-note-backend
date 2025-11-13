@@ -5,9 +5,23 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { NotaArquivoModule } from './nota-arquivo/nota-arquivo.module';
 import { NotaModule } from './nota/nota.module';
 import { CategoriaModule } from './categoria/categoria.module';
+import ormConfig from '../ormconfig';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UsuarioModule, CategoriaModule, NotaModule, NotaArquivoModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    UsuarioModule,
+    CategoriaModule,
+    NotaModule,
+    NotaArquivoModule,
+    TypeOrmModule.forRoot(ormConfig),
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

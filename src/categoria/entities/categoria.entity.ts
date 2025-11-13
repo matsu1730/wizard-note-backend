@@ -15,7 +15,7 @@ export class Categoria {
   @Column({ type: 'varchar', length: 20 })
   cor: string;
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn({ type: 'timestamp' })
   data_criacao: Date;
 
   @OneToMany(() => Nota, nota => nota.categoria)

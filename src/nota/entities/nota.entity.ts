@@ -26,10 +26,10 @@ export class Nota {
   @Column({ type: 'text', nullable: true })
   palavras_chave: string;
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn({ type: 'timestamp' })
   data_criacao: Date;
 
-  @UpdateDateColumn({ type: 'datetime' })
+  @UpdateDateColumn({ type: 'timestamp' })
   data_atualizacao: Date;
 
   @OneToMany(() => NotaArquivo, notaArquivo => notaArquivo.nota)

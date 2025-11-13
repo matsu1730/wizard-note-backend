@@ -1,5 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Unique, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Unique,
+  OneToMany,
+  BeforeInsert,
+  BeforeUpdate,
+} from 'typeorm';
 import { Nota } from '../../nota/entities/nota.entity';
+import * as bcrypt from 'bcrypt';
 
 @Entity('tb_usuario')
 @Unique(['email'])
@@ -14,14 +25,23 @@ export class Usuario {
   email: string;
 
   @Column({ type: 'varchar', length: 255 })
-  senha_hash: string;
+  senha: string;
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn({ type: 'timestamp' })
   data_criacao: Date;
 
-  @UpdateDateColumn({ type: 'datetime' })
+  @UpdateDateColumn({ type: 'timestamp' })
   data_atualizacao: Date;
 
   @OneToMany(() => Nota, nota => nota.usuario)
   notas: Nota[];
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    if (this.senha) {
+      const salt = await bcrypt.genSalt();
+      this.senha = await bcrypt.hash(this.senha, salt);
+    }
+  }
 }

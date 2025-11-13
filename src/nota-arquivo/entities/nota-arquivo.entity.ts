@@ -9,12 +9,12 @@ export class NotaArquivo {
   @ManyToOne(() => Nota, nota => nota.arquivos, { nullable: false })
   nota: Nota;
 
-  @Column({ type: 'blob' })
+  @Column({ type: 'bytea' })
   arquivo: Buffer;
 
   @Column({ type: 'varchar', length: 255 })
   nome_arquivo: string;
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn({ type: 'timestamp' })
   data_criacao: Date;
 }
