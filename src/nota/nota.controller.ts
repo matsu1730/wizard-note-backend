@@ -8,27 +8,27 @@ export class NotaController {
   constructor(private readonly notaService: NotaService) {}
 
   @Post()
-  create(@Body() createNotaDto: CreateNotaDto) {
-    return this.notaService.create(createNotaDto);
+  async create(@Body() createNotaDto: CreateNotaDto) {
+    return await this.notaService.create(createNotaDto);
   }
 
   @Get()
-  findAll() {
-    return this.notaService.findAll();
+  async findAll() {
+    return await this.notaService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.notaService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.notaService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateNotaDto: UpdateNotaDto) {
-    return this.notaService.update(+id, updateNotaDto);
+  async update(@Param('id') id: string, @Body() updateNotaDto: UpdateNotaDto) {
+    return await this.notaService.update(+id, updateNotaDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.notaService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.notaService.remove(+id);
   }
 }

@@ -36,10 +36,7 @@ export class UsuarioService {
   }
 
   async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return await this.usuarioRepository.update(
-      { id_usuario: id },
-      { ...updateUsuarioDto },
-    );
+    return await this.usuarioRepository.update(id, updateUsuarioDto);
   }
 
   async remove(id: number) {

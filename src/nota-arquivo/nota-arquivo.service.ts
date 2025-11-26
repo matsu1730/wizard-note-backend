@@ -1,26 +1,43 @@
 import { Injectable } from '@nestjs/common';
 import { CreateNotaArquivoDto } from './dto/create-nota-arquivo.dto';
 import { UpdateNotaArquivoDto } from './dto/update-nota-arquivo.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { NotaArquivo } from './entities/nota-arquivo.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class NotaArquivoService {
-  create(createNotaArquivoDto: CreateNotaArquivoDto) {
-    return 'This action adds a new notaArquivo';
+  constructor(
+    @InjectRepository(NotaArquivo) private readonly notaArquivoRepository: Repository<NotaArquivo>
+  ) {}
+
+  async create(createNotaArquivoDto: CreateNotaArquivoDto) {
+    const buffer = Buffer.from(createNotaArquivoDto.arquivo, 'base64');
+    const notaArquivo = this.notaArquivoRepository.create({
+      ...createNotaArquivoDto,
+      arquivo: buffer
+    });
+    return await this.notaArquivoRepository.save(notaArquivo);
   }
 
-  findAll() {
-    return `This action returns all notaArquivo`;
+  async findAll() {
+    return await this.notaArquivoRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} notaArquivo`;
+  async findOne(id: number) {
+    return this.notaArquivoRepository.findOne({ where: { id_nota_arquivo: id } });
   }
 
-  update(id: number, updateNotaArquivoDto: UpdateNotaArquivoDto) {
-    return `This action updates a #${id} notaArquivo`;
+  async update(id: number, updateNotaArquivoDto: UpdateNotaArquivoDto) {
+    let updateObject = {
+      id_nota: updateNotaArquivoDto.id_nota,
+      nome_arquivo: updateNotaArquivoDto.nome_arquivo,
+      arquivo: Buffer.from(updateNotaArquivoDto.arquivo??'', 'base64')
+    }
+    return await this.notaArquivoRepository.update(id, updateObject);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} notaArquivo`;
+  async remove(id: number) {
+    return await this.notaArquivoRepository.delete(id);
   }
 }

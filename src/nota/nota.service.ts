@@ -1,26 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateNotaDto } from './dto/create-nota.dto';
 import { UpdateNotaDto } from './dto/update-nota.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Nota } from './entities/nota.entity';
 
 @Injectable()
 export class NotaService {
-  create(createNotaDto: CreateNotaDto) {
-    return 'This action adds a new nota';
+  constructor(
+    @InjectRepository(Nota) private readonly notaRepository: Repository<Nota>,
+  ) {}
+
+  async create(createNotaDto: CreateNotaDto) {
+    const nota = this.notaRepository.create(createNotaDto);
+    return await this.notaRepository.save(nota);
   }
 
-  findAll() {
-    return `This action returns all nota`;
+  async findAll() {
+    return await this.notaRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} nota`;
+  async findOne(id: number) {
+    return await this.notaRepository.findOne({ where: { id_nota: id } });
   }
 
-  update(id: number, updateNotaDto: UpdateNotaDto) {
-    return `This action updates a #${id} nota`;
+  async update(id: number, updateNotaDto: UpdateNotaDto) {
+    return await this.notaRepository.update(id, updateNotaDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} nota`;
+  async remove(id: number) {
+    return await this.notaRepository.delete(id);
   }
 }

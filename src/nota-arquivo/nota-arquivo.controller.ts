@@ -8,27 +8,27 @@ export class NotaArquivoController {
   constructor(private readonly notaArquivoService: NotaArquivoService) {}
 
   @Post()
-  create(@Body() createNotaArquivoDto: CreateNotaArquivoDto) {
-    return this.notaArquivoService.create(createNotaArquivoDto);
+  async create(@Body() createNotaArquivoDto: CreateNotaArquivoDto) {
+    return await this.notaArquivoService.create(createNotaArquivoDto);
   }
 
   @Get()
-  findAll() {
-    return this.notaArquivoService.findAll();
+  async findAll() {
+    return await this.notaArquivoService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.notaArquivoService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.notaArquivoService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateNotaArquivoDto: UpdateNotaArquivoDto) {
-    return this.notaArquivoService.update(+id, updateNotaArquivoDto);
+  async update(@Param('id') id: string, @Body() updateNotaArquivoDto: UpdateNotaArquivoDto) {
+    return await this.notaArquivoService.update(+id, updateNotaArquivoDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.notaArquivoService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.notaArquivoService.remove(+id);
   }
 }
