@@ -1,8 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { NotaArquivoService } from './nota-arquivo.service';
 import { CreateNotaArquivoDto } from './dto/create-nota-arquivo.dto';
 import { UpdateNotaArquivoDto } from './dto/update-nota-arquivo.dto';
+import { JwtAuthGuard } from '../auth/guard/jwt.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('nota-arquivo')
 export class NotaArquivoController {
   constructor(private readonly notaArquivoService: NotaArquivoService) {}

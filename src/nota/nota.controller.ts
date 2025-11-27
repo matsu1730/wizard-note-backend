@@ -1,8 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { NotaService } from './nota.service';
 import { CreateNotaDto } from './dto/create-nota.dto';
 import { UpdateNotaDto } from './dto/update-nota.dto';
+import { SummarizationDto } from './dto/summarization.dto';
+import { JwtAuthGuard } from '../auth/guard/jwt.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('nota')
 export class NotaController {
   constructor(private readonly notaService: NotaService) {}
@@ -30,5 +42,10 @@ export class NotaController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.notaService.remove(+id);
+  }
+
+  @Post('summarization')
+  async makeSummarization(@Body() summarizationDto: SummarizationDto) {
+    return await this.notaService.makeSummarization(summarizationDto);
   }
 }

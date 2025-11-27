@@ -4,11 +4,17 @@ import { UpdateNotaDto } from './dto/update-nota.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Nota } from './entities/nota.entity';
+import {
+  SummarizationDto,
+  SummarizationResultDto,
+} from './dto/summarization.dto';
+import { HuggingFaceApiService } from '../hugging-face-api/hugging-face-api.service';
 
 @Injectable()
 export class NotaService {
   constructor(
     @InjectRepository(Nota) private readonly notaRepository: Repository<Nota>,
+    private readonly huggingFaceApiService: HuggingFaceApiService
   ) {}
 
   async create(createNotaDto: CreateNotaDto) {
@@ -30,5 +36,9 @@ export class NotaService {
 
   async remove(id: number) {
     return await this.notaRepository.delete(id);
+  }
+
+  async makeSummarization(summarizationDto: SummarizationDto) {
+    return new SummarizationResultDto(await this.huggingFaceApiService.getSummarization(summarizationDto.prompt));
   }
 }
