@@ -62,13 +62,26 @@ JWT_ISSUER=https://www.wizard-note.com
 JWT_SECRET=seu_secret
 ```
 
-### 4. Configurar banco de dados
-Criar database PostgreSQL: wizard_note
-Executar migrations (se houver)
-npm run typeorm:migration:run
+### 4. Subir o banco com Docker Compose
+
+Certifique-se de ter **Docker** e **Docker Compose** instalados.
+
+Na raiz do projeto, já deve existir o arquivo `docker-compose.yml`.  
+Para subir o PostgreSQL em segundo plano:
+```
+docker compose up -d
+```
+ou, em versões mais antigas:
+```
+docker-compose up -d
+```
+Isso irá iniciar um container PostgreSQL com as configurações definidas no `docker-compose.yml`.
+
 
 ### 5. Rodar em modo desenvolvimento
+```
 npm run start:dev
+```
 
 A aplicação estará disponível em: 👉 [**http://localhost:3000**](http://localhost:3000)
 
@@ -90,6 +103,7 @@ npm run test:cov # Testes com coverage
 ```
 
 ## 🏗️ Estrutura do Projeto
+```markdown
 src/
 ├── auth/ # Autenticação JWT, Guards
 ├── usuario/ # CRUD Usuários
@@ -98,6 +112,7 @@ src/
 ├── nota-arquivo/ # Upload arquivos
 ├── utils/ # DTOs
 └── config/ # Configuração de ambiente e ORM
+```
 
 ## 🔗 Tecnologias Utilizadas
 
@@ -123,6 +138,8 @@ src/
 
 ---
 
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+<div align="center">
+  <a href="http://nestjs.com/" target="_blank">
+    <img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" />
+  </a>
+</div>
