@@ -14,7 +14,7 @@ export class AuthService {
 
   async validateUsuario(email: string, senha: string): Promise<Usuario | null> {
     const usuario = await this.usuarioRepository.findOne({ where: { email } });
-    if (usuario && await bcrypt.compare(senha, usuario.senha)) {
+    if (usuario && (await bcrypt.compare(senha, usuario.senha))) {
       return usuario;
     }
     return null;
@@ -27,15 +27,10 @@ export class AuthService {
     }
 
     const payload = { sub: usuario.id_usuario, email: usuario.email };
-    const token = this.jwtService.sign(payload);
 
     return {
-      token,
-      usuario: {
-        id_usuario: usuario.id_usuario,
-        nome: usuario.nome,
-        email: usuario.email,
-      },
+      access_token: this.jwtService.sign(payload),
+      expires_in: '3600',
     };
   }
 }

@@ -6,15 +6,24 @@ import { AuthService } from './auth.service';
 import { Usuario } from '../usuario/entities/usuario.entity';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { AuthController } from './auth.controller';
+import { JWT_ISSUER, JWT_SECRET } from '../config/environment.config';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Usuario]),
     PassportModule,
-    JwtModule.register({
-      secret: '16e74b5b36616640d0d4817acd9a5463', // Preferably from env variable
-      signOptions: { expiresIn: '1h' },
+    JwtModule.registerAsync({
+      global: true,
+      useFactory: () => ({
+        secret: JWT_SECRET!,
+        signOptions: {
+          issuer: JWT_ISSUER,
+          expiresIn: '1h',
+          algorithm: 'HS256'
+        },
+      }),
     }),
+
   ],
   providers: [AuthService, JwtStrategy],
   exports: [AuthService],

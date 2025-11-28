@@ -30,20 +30,20 @@ export class UsuarioController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
-    return await this.usuarioService.update(+id, updateUsuarioDto);
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.usuarioService.remove(+id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('me')
+  @Get('self')
   getMe(@Request() req: any) {
     return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('self')
+  async updateMe(@Request() req: any, @Body() updateUsuarioDto: UpdateUsuarioDto) {
+    return await this.usuarioService.update(req.user.id_usuario, updateUsuarioDto);
   }
 }
