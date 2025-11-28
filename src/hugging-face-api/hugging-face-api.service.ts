@@ -11,7 +11,7 @@ export class HuggingFaceApiService {
     this.hfClient = new InferenceClient(HUGGING_FACE_API_KEY);
   }
 
-  async getSummarization(inputs: string) {
+  async getSummarization(inputs: string): Promise<string> {
     const response: SummarizationOutput = await this.hfClient.summarization({
       inputs,
       model: 'google/pegasus-xsum',

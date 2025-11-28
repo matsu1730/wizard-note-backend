@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCategoriaDto } from './dto/create-categoria.dto';
 import { UpdateCategoriaDto } from './dto/update-categoria.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Categoria } from './entities/categoria.entity';
 import { Repository } from 'typeorm';
+import { CategoriaDto } from './dto/categoria.dto';
+import { UpdateAndDeleteResponseDto } from '../utils/dto/api-response.dto';
 
 @Injectable()
 export class CategoriaService {
@@ -12,23 +14,31 @@ export class CategoriaService {
   ) {}
 
   async create(createCategoriaDto: CreateCategoriaDto) {
-    const categoria = this.categoriaRepository.create(createCategoriaDto);
-    return await this.categoriaRepository.save(categoria);
+    let categoria = this.categoriaRepository.create(createCategoriaDto);
+    categoria = await this.categoriaRepository.save(categoria);
+    return new CategoriaDto(categoria);
   }
 
   async findAll() {
-    return await this.categoriaRepository.find();
+    const categorias: Categoria[] = await this.categoriaRepository.find();
+    return categorias.map(categoria => new CategoriaDto(categoria));
   }
 
-  findOne(id: number) {
-    return this.categoriaRepository.findOne({ where: { id_categoria: id } });
+  async findOne(id: number) {
+    const categoria = await this.categoriaRepository.findOne({ where: { id_categoria: id } });
+    if (!categoria) {
+      throw new NotFoundException('Categoria não encontrada.');
+    }
+    return new CategoriaDto(categoria);
   }
 
   async update(id: number, updateCategoriaDto: UpdateCategoriaDto) {
-    return await this.categoriaRepository.update(id, updateCategoriaDto);
+    const updateResult = await this.categoriaRepository.update(id, updateCategoriaDto);
+    return new UpdateAndDeleteResponseDto(updateResult.affected??0);
   }
 
   async remove(id: number) {
-    return await this.categoriaRepository.delete(id);
+    const deleteResult = await this.categoriaRepository.delete(id);
+    return new UpdateAndDeleteResponseDto(deleteResult.affected??0);
   }
 }

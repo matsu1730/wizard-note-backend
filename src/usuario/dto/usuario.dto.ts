@@ -1,42 +1,44 @@
-import { Usuario } from '../entities/usuario.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class AuthUsuarioDto {
+export class UsuarioDto {
   @ApiProperty({
-    description: 'ID único do usuário',
-    example: 123
+    example: 1,
+    description: 'Identificador único do usuário'
   })
   id_usuario: number;
 
   @ApiProperty({
+    example: 'João Silva',
     description: 'Nome completo do usuário',
-    example: 'João Silva'
+    minLength: 2,
+    maxLength: 100
   })
   nome: string;
 
   @ApiProperty({
-    description: 'Email do usuário',
-    example: 'joao.silva@email.com'
+    example: 'joao.silva@email.com',
+    description: 'Endereço de e-mail único do usuário',
+    format: 'email'
   })
   email: string;
 
   @ApiProperty({
+    example: '2025-11-27T22:00:00.000Z',
     description: 'Data de criação da conta',
     type: 'string',
-    format: 'date-time',
-    example: '2025-11-27T21:51:00.000Z'
+    format: 'date-time'
   })
   data_criacao: Date;
 
   @ApiProperty({
+    example: '2025-11-27T22:30:00.000Z',
     description: 'Data da última atualização',
     type: 'string',
-    format: 'date-time',
-    example: '2025-11-27T21:51:00.000Z'
+    format: 'date-time'
   })
   data_atualizacao: Date;
 
-  constructor(usuario: Usuario) {
+  constructor(usuario: UsuarioDto) {
     this.id_usuario = usuario.id_usuario;
     this.nome = usuario.nome;
     this.email = usuario.email;
