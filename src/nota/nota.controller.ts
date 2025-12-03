@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { NotaService } from './nota.service';
@@ -27,6 +28,7 @@ import {
 } from '@nestjs/swagger';
 import { NotaDto } from './dto/nota.dto';
 import { UpdateAndDeleteResponseDto } from '../utils/dto/api-response.dto';
+import { AuthRequest } from '../utils/dto/auth.dto';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -43,8 +45,11 @@ export class NotaController {
     description: 'Nota criada com sucesso.',
     type: NotaDto,
   })
-  async create(@Body() createNotaDto: CreateNotaDto): Promise<NotaDto> {
-    return await this.notaService.create(createNotaDto);
+  async create(
+    @Request() req: AuthRequest,
+    @Body() createNotaDto: CreateNotaDto
+  ): Promise<NotaDto> {
+    return await this.notaService.create(req.user.id_usuario, createNotaDto);
   }
 
   @Post('summarization')
@@ -68,7 +73,7 @@ export class NotaController {
   @ApiOperation({
     summary: 'Listar todas as notas.',
     description:
-      'Retorna lista completa de todas as notas do usuário autenticado.',
+      'Retorna lista completa de todas as notas.',
   })
   @ApiOkResponse({
     description: 'Lista de notas retornada com sucesso.',
@@ -76,6 +81,20 @@ export class NotaController {
   })
   async findAll(): Promise<NotaDto[]> {
     return await this.notaService.findAll();
+  }
+
+  @Get('by-user')
+  @ApiOperation({
+    summary: 'Listar todas as notas por usuário logado.',
+    description:
+      'Retorna lista completa de todas as notas do usuário autenticado.',
+  })
+  @ApiOkResponse({
+    description: 'Lista de notas retornada com sucesso.',
+    type: [NotaDto],
+  })
+  async findAllByUser(@Request() req: AuthRequest): Promise<NotaDto[]> {
+    return await this.notaService.findAllByUser(req.user.id_usuario);
   }
 
   @Get(':id')
@@ -119,7 +138,7 @@ export class NotaController {
   async update(
     @Param('id') id: string,
     @Body() updateNotaDto: UpdateNotaDto,
-  ): Promise<UpdateAndDeleteResponseDto> {
+  ): Promise<NotaDto> {
     return await this.notaService.update(+id, updateNotaDto);
   }
 

@@ -2,13 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateNotaDto {
   @ApiProperty({
-    description: 'ID do usuário que criou a nota',
-    example: 1,
-    minimum: 1
-  })
-  id_usuario: number;
-
-  @ApiProperty({
     description: 'ID da categoria associada à nota',
     example: 2,
     minimum: 1

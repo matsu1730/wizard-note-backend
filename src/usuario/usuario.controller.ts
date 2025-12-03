@@ -21,12 +21,7 @@ import {
 } from '@nestjs/swagger';
 import { UsuarioDto } from './dto/usuario.dto';
 import { UpdateAndDeleteResponseDto } from '../utils/dto/api-response.dto';
-
-interface AuthRequest extends Request {
-  user: {
-    id_usuario: number;
-  };
-}
+import { AuthRequest } from '../utils/dto/auth.dto';
 
 @ApiBearerAuth()
 @Controller('usuario')
