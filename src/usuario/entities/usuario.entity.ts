@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { Nota } from '../../nota/entities/nota.entity';
 import * as bcrypt from 'bcrypt';
+import { DB_TYPE } from '../../config/environment.config';
 
 @Entity('tb_usuario')
 @Unique(['email'])
@@ -27,10 +28,16 @@ export class Usuario {
   @Column({ type: 'varchar', length: 255 })
   senha: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({
+    type: DB_TYPE === 'sqlite' ? 'datetime' : 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   data_criacao: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @UpdateDateColumn({
+    type: DB_TYPE === 'sqlite' ? 'datetime' : 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   data_atualizacao: Date;
 
   @OneToMany(() => Nota, nota => nota.usuario)

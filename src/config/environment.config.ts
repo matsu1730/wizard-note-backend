@@ -1,7 +1,10 @@
 export const PORT = process.env.PORT??3000;
 
+export const NODE_ENV = process.env.NODE_ENV??'';
+
 export const HUGGING_FACE_API_KEY = process.env.HUGGING_FACE_API_KEY??'';
 
+export const DB_TYPE = process.env.DB_TYPE??'';
 export const DB_HOST = process.env.DB_HOST??'';
 export const DB_PORT = process.env.DB_PORT??'';
 export const DB_USERNAME = process.env.DB_USERNAME??'';

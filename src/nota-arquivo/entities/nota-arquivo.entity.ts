@@ -7,6 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
+import { DB_TYPE } from '../../config/environment.config';
 
 @Entity('tb_nota_arquivo')
 export class NotaArquivo {
@@ -16,13 +17,16 @@ export class NotaArquivo {
   @Column({ type: 'int', unsigned: true })
   id_nota: number;
 
-  @Column({ type: 'bytea' })
+  @Column({ type: DB_TYPE === 'sqlite' ? 'blob' : 'bytea' })
   arquivo: Buffer;
 
   @Column({ type: 'varchar', length: 255 })
   nome_arquivo: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({
+    type: DB_TYPE === 'sqlite' ? 'datetime' : 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   data_criacao: Date;
 
   @ManyToOne(() => Nota, nota => nota.arquivos, { nullable: false })

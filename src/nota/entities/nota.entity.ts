@@ -11,6 +11,7 @@ import {
 import { Usuario } from '../../usuario/entities/usuario.entity';
 import { Categoria } from 'src/categoria/entities/categoria.entity';
 import { NotaArquivo } from '../../nota-arquivo/entities/nota-arquivo.entity';
+import { DB_TYPE } from '../../config/environment.config';
 
 @Entity('tb_nota')
 export class Nota {
@@ -35,10 +36,16 @@ export class Nota {
   @Column({ type: 'text', nullable: true })
   palavras_chave: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({
+    type: DB_TYPE === 'sqlite' ? 'datetime' : 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   data_criacao: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @UpdateDateColumn({
+    type: DB_TYPE === 'sqlite' ? 'datetime' : 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   data_atualizacao: Date;
 
   @OneToMany(() => NotaArquivo, notaArquivo => notaArquivo.nota)

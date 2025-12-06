@@ -9,23 +9,28 @@ import {
   DB_PASSWORD,
   DB_PORT,
   DB_USERNAME,
+  DB_TYPE,
+  NODE_ENV,
 } from './environment.config';
 
+const entities = [Usuario, Categoria, Nota, NotaArquivo];
+
 const ormConfig: TypeOrmModuleOptions = {
-  type: 'postgres',
-  host: DB_HOST??'localhost',
-  port: Number(DB_PORT)??5432,
-  username: DB_USERNAME??'postgres',
-  password: DB_PASSWORD??'postgres',
-  database: DB_NAME??'wizard_note',
-  entities: [
-    Usuario,
-    Categoria,
-    Nota,
-    NotaArquivo
-  ],
-  synchronize: true,
-  logging: true,
+  ...(DB_TYPE === 'sqlite' ? {
+    type: 'sqlite' as const,
+    database: ':memory:',  // Banco em memória - perde dados no restart
+  } : {
+    type: 'postgres',
+    host: DB_HOST ?? 'localhost',
+    port: Number(DB_PORT) ?? 5432,
+    username: DB_USERNAME ?? 'postgres',
+    password: DB_PASSWORD ?? 'postgres',
+    database: DB_NAME ?? 'wizard_note',
+  }),
+
+  entities,
+  synchronize: NODE_ENV === 'dev', // APENAS desenvolvimento/testes
+  logging: NODE_ENV === 'dev',
 };
 
 export default ormConfig;
