@@ -17,7 +17,7 @@ const entities = [Usuario, Categoria, Nota, NotaArquivo];
 
 const ormConfig: TypeOrmModuleOptions = {
   ...(DB_TYPE === 'sqlite' ? {
-    type: 'sqlite' as const,
+    type: 'better-sqlite3' as const,
     database: ':memory:',  // Banco em memória - perde dados no restart
   } : {
     type: 'postgres',

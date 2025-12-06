@@ -8,11 +8,13 @@ import ormConfig from './config/ormconfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env',
     }),
     UsuarioModule,
     CategoriaModule,
@@ -20,6 +22,7 @@ import { AuthModule } from './auth/auth.module';
     NotaArquivoModule,
     TypeOrmModule.forRoot(ormConfig),
     AuthModule,
+    DatabaseModule,
   ],
   providers: [AppService],
 })

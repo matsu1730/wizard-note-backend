@@ -32,6 +32,7 @@
     "@nestjs/typeorm": "^11.0.0",
     "axios": "^1.13.2",
     "bcrypt": "^6.0.0",
+    "better-sqlite3": "^12.5.0",
     "dotenv": "^17.2.3",
     "huggingface": "^1.4.0",
     "passport": "^0.7.0",
