@@ -2,6 +2,7 @@ export const PORT = process.env.PORT??3000;
 
 export const NODE_ENV = process.env.NODE_ENV??'';
 
+export const GEMINI_API_KEY = process.env.GEMINI_API_KEY??'';
 export const HUGGING_FACE_API_KEY = process.env.HUGGING_FACE_API_KEY??'';
 
 export const DB_TYPE = process.env.DB_TYPE??'';

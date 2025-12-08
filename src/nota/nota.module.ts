@@ -4,11 +4,13 @@ import { NotaController } from './nota.controller';
 import { HuggingFaceApiModule } from '../hugging-face-api/hugging-face-api.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Nota } from './entities/nota.entity';
+import { GoogleGeminiModule } from '../google-gemini/google-gemini.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Nota]),
-    HuggingFaceApiModule
+    HuggingFaceApiModule,
+    GoogleGeminiModule
   ],
   controllers: [NotaController],
   providers: [NotaService],

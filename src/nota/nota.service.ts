@@ -11,12 +11,14 @@ import {
 import { HuggingFaceApiService } from '../hugging-face-api/hugging-face-api.service';
 import { NotaDto } from './dto/nota.dto';
 import { UpdateAndDeleteResponseDto } from '../utils/dto/api-response.dto';
+import { GoogleGeminiService } from '../google-gemini/google-gemini.service';
 
 @Injectable()
 export class NotaService {
   constructor(
     @InjectRepository(Nota) private readonly notaRepository: Repository<Nota>,
     private readonly huggingFaceApiService: HuggingFaceApiService,
+    private readonly googleGeminiService: GoogleGeminiService
   ) {}
 
   async create(
@@ -69,9 +71,10 @@ export class NotaService {
     summarizationDto: SummarizationDto,
   ): Promise<SummarizationResultDto> {
     return new SummarizationResultDto(
-      await this.huggingFaceApiService.getSummarization(
+      await this.googleGeminiService.summarize(summarizationDto.prompt)
+      /*await this.huggingFaceApiService.getSummarization(
         summarizationDto.prompt,
-      ),
+      ),*/
     );
   }
 }
